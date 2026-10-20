@@ -1,0 +1,4 @@
+#!/bin/sh
+
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+git diff --cached --no-ext-diff --unified=0 --no-color -- | "$hook_dir/check-secrets.sh"

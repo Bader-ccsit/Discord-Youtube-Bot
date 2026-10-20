@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+pass.txt
+.venv/
+__pycache__/
+*.py[cod]
+*.pem
+*.key
+credentials.json
+secrets.json

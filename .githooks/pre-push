@@ -1,0 +1,17 @@
+#!/bin/sh
+
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+while read -r local_ref local_sha remote_ref remote_sha
+do
+    [ -n "$local_sha" ] || continue
+    case "$local_sha" in
+        *[!0]*) ;;
+        *) continue ;;
+    esac
+
+    if [ -z "$remote_sha" ] || ! git cat-file -e "$remote_sha^{commit}" 2>/dev/null; then
+        git log --format= --patch "$local_sha" --not --remotes
+    else
+        git log --format= --patch "$local_sha" "^$remote_sha"
+    fi | "$hook_dir/check-secrets.sh" || exit 1
+done
